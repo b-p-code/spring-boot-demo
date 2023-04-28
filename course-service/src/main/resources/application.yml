@@ -1,0 +1,11 @@
+# CS5012 hw3 3/24/23 Bryce Paubel
+# Application configuration for course service
+spring:
+  application:
+    name: course-service
+  profiles:
+    active: proj
+
+  # Standard bootstrap.properties properties are deprecated so this is used instead
+  config:
+    import: configserver:http://configserver:8071

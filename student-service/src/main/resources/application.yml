@@ -1,0 +1,10 @@
+# CS5012 hw3 Bryce Paubel 3/24/23
+# Application configuration for student-service
+spring:
+  application:
+    name: student-service
+  profiles:
+    active: proj
+  # Newer versions of Spring Boot use this
+  config:
+    import: configserver:http://configserver:8071

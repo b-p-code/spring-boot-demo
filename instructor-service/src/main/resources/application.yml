@@ -1,0 +1,10 @@
+# CS5012 hw4 Bryce Paubel 4/10/23
+# Application configuration for instructor-service
+spring:
+  application:
+    name: instructor-service
+  profiles:
+    active: proj
+  # Newer versions of Spring Boot use this
+  config:
+    import: configserver:http://configserver:8071

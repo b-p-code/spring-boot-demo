@@ -1,0 +1,32 @@
+# CS5012 hw3 Bryce Paubel 3/24/23
+# Extra application configuration for the discovery service
+
+spring:
+  application:
+    name: discovery-service
+  boot:
+    admin:
+      context-path: /admin
+
+server:
+  port: 8070
+
+eureka:
+  instance:
+    hostname: discoveryserver
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+  server:
+    waitTimeInMsWhenSyncEmpty: 5
+
+    # If our renewals go below 50 percent, we have an error
+    renewalPercentThreshold: 0.50
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

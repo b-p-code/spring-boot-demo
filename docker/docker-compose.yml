@@ -1,0 +1,160 @@
+# CS5012 hw5 Bryce Paubel 4/27/23
+# docker-compose based heavily on class examples
+# Spins up a database, config-service, discovery-service, course-service, student-service, and instructor-service
+
+# NOTE - If source files have not changed between projects, they may still have hw3 as their header
+
+# NOTE - dockerfiles will build to paubel/DOCKER_IMAGE_NAME:SNAPSHOT-0.0.1
+# If you would like to use these dockerfile images, change the prefixes in this file to match
+
+version: '2.1'
+services:
+  # Database service
+  database:
+    image: postgres:13-alpine
+    ports:
+      - "8432:5432"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB:       "school"
+    # Mount the initialization and data scripts
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/1-init.sql
+      - ./data.sql:/docker-entrypoint-initdb.d/2-data.sql
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Gateway service, port 8072
+  gateway-service:
+    image: paubel/gateway-service:0.0.1-SNAPSHOT
+    ports:
+      - "8072:8080"
+    networks:
+      backend:
+        aliases:
+          - "gatewayserver"
+    depends_on:
+      database:
+        condition: service_healthy
+      config-service:
+        condition: service_started
+      discovery-service:
+        condition: service_started
+  # Configuration service, port 8071
+  config-service:
+    image: paubel/config-service:0.0.1-SNAPSHOT
+    ports:
+      - "8071:8071"
+    networks:
+      backend:
+        aliases:
+          - "configserver"
+
+  # Discovery service, port 8070
+  discovery-service:
+    image: bwpd58/discovery-service:0.0.1-SNAPSHOT
+    ports:
+      - "8070:8070"
+    depends_on:
+      database:
+        condition: service_healthy
+      config-service:
+        condition: service_started
+    networks:
+      backend:
+        aliases:
+          - "discoveryserver"
+
+  # Course service, running on 8081
+  course-service:
+    image: bwpd58/course-service:0.0.1-SNAPSHOT
+    environment:
+      PROFILE: "proj"
+    # Wait on the database
+    depends_on:
+      database:
+        condition: service_healthy
+      config-service:
+        condition: service_started
+      discovery-service:
+        condition: service_started
+      instructor-service:
+        condition: service_started
+    ports:
+      - "8081:8080"
+    networks:
+      - backend
+
+  # Student service, running on 8080
+  student-service:
+    image: bwpd58/student-service:0.0.1-SNAPSHOT
+    environment:
+      PROFILE: "proj"
+    depends_on:
+    # Wait on the database
+      database:
+        condition: service_healthy
+      config-service:
+        condition: service_started
+      discovery-service:
+        condition: service_started
+    ports:
+      - "8080:8080"
+    networks:
+      - backend
+
+  # Instructor service, running on 8082
+  instructor-service:
+    image: bwpd58/instructor-service:0.0.1-SNAPSHOT
+    environment:
+      PROFILE: "proj"
+    depends_on:
+      # Wait on the database
+      database:
+        condition: service_healthy
+      config-service:
+        condition: service_started
+      discovery-service:
+        condition: service_started
+    ports:
+      - "8082:8080"
+    networks:
+      - backend
+
+  # Zookeeper and Kafka
+  zookeeper:
+    image: wurstmeister/zookeeper:latest
+    ports:
+      - 2181:2181
+    networks:
+      backend:
+        aliases:
+          - "zookeeper"
+  kafkaserver:
+    image: wurstmeister/kafka:latest
+    ports:
+      - 9092:9092
+    environment:
+      - KAFKA_ADVERTISED_HOST_NAME=kafka
+      - KAFKA_ADVERTISED_PORT=9092
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_CREATE_TOPICS=dresses:1:1,ratings:1:1
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    depends_on:
+      - zookeeper
+    networks:
+      backend:
+        aliases:
+          - "kafka"
+
+# Network is backend, using bride driver
+networks:
+  backend:
+    driver: bridge

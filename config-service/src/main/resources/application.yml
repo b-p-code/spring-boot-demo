@@ -1,0 +1,23 @@
+# CS5012 Bryce Paubel hw3 3/23/23
+# Application configuration for configuration service
+# This does not register with the discovery service
+
+spring:
+  application:
+    name: config-service
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/config
+
+server:
+  port: 8071
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

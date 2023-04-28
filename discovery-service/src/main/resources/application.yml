@@ -1,0 +1,16 @@
+# CS5012 hw3 3/24/23 Bryce Paubel
+# Application configuration for discovery service
+spring:
+  application:
+    name: discovery-service
+  profiles:
+    active: proj
+
+  # New versions of Spring Boot use this
+  config:
+    import: configserver:http://configserver:8071
+
+  # Disable ribbon
+  cloud:
+    ribbon:
+      enabled: false
