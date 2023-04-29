@@ -14,11 +14,11 @@ public class InstructorChangeHandler {
             case "GET":
                 System.out.println("Received a GET event from the instructor service for instructor: " + message.getName());
                 break;
-            case "SAVE":
-                System.out.println("Received a SAVE event from the instructor service for instructor: " + message.getName());
+            case "POST":
+                System.out.println("Received a POST event from the instructor service for instructor: " + message.getName());
                 break;
-            case "UPDATE":
-                System.out.println("Received an UPDATE event from the instructor service for instructor: " + message.getName());
+            case "PUT":
+                System.out.println("Received an PUT event from the instructor service for instructor: " + message.getName());
                 break;
             case "DELETE":
                 System.out.println("Received a DELETE event from the instructor service for instructor: " + message.getName());

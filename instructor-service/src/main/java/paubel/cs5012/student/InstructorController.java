@@ -40,6 +40,7 @@ public class InstructorController {
     // Insert an instructor into the database
     @PostMapping
     public Instructor addInstructor(@RequestBody Instructor instructor) {
+        System.out.println("instructor-service making a 'POST' change, sending Kafka message");
         source.publishInstructorChange("POST", instructor.getName());
         return instructorRepository.save(instructor);
     }
@@ -54,6 +55,7 @@ public class InstructorController {
             return;
         }
 
+        System.out.println("instructor-service making a 'DELETE' change, sending Kafka message");
         source.publishInstructorChange("DELETE", instructor.get().getName());
         instructorRepository.deleteById(id);
     }

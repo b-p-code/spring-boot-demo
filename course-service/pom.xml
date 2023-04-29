@@ -23,7 +23,7 @@
 		<maven.test.skip>true</maven.test.skip>
 		<java.version>17</java.version>
 		<docker.image.prefix>paubel</docker.image.prefix>
-		<spring-cloud.version>Hoxton.SR1</spring-cloud.version>
+		<spring-cloud.version>2020.0.6</spring-cloud.version>
 	</properties>
 	<dependencies>
 		<dependency>
