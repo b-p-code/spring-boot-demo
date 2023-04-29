@@ -1,5 +1,5 @@
-# CS5012 hw3 Bryce Paubel 3/23/23
-# Dockerfile to build course-service into a docker image
+# CS5012 hw4 Bryce Paubel 4/10/23
+# Dockerfile to build instructor-service into a docker image
 # Dockerfile heavily based on class examples
 
 #stage 1
@@ -29,4 +29,4 @@ COPY --from=build ${DEPENDENCY}/META-INF /app/META-INF
 COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
 
 #execute the application
-ENTRYPOINT ["java","-cp","app:app/lib/*","paubel.cs5012.course.CourseServiceApplication"]
+ENTRYPOINT ["java","-cp","app:app/lib/*","paubel.cs5012.instructor.InstructorServiceApplication"]

@@ -73,7 +73,7 @@ services:
 
   # Course service, running on 8081
   course-service:
-    image: bwpd58/course-service:0.0.1-SNAPSHOT
+    image: paubel/course-service:0.0.1-SNAPSHOT
     environment:
       PROFILE: "proj"
     # Wait on the database
@@ -111,7 +111,7 @@ services:
 
   # Instructor service, running on 8082
   instructor-service:
-    image: bwpd58/instructor-service:0.0.1-SNAPSHOT
+    image: paubel/instructor-service:0.0.1-SNAPSHOT
     environment:
       PROFILE: "proj"
     depends_on:

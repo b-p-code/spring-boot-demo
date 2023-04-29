@@ -1,11 +1,10 @@
-# CS5012 hw3 3/24/23 Bryce Paubel
-# Application configuration for course service
+# CS5012 hw4 Bryce Paubel 4/10/23
+# Application configuration for course-service
 spring:
   application:
     name: course-service
   profiles:
     active: proj
-
-  # Standard bootstrap.properties properties are deprecated so this is used instead
+  # Newer versions of Spring Boot use this
   config:
     import: configserver:http://configserver:8071

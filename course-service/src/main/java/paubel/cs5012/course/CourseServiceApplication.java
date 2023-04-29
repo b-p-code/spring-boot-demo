@@ -10,11 +10,13 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.context.annotation.Bean;
+import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.messaging.Sink;
 
 @SpringBootApplication
+@EnableBinding(Sink.class)
 public class CourseServiceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CourseServiceApplication.class, args);
