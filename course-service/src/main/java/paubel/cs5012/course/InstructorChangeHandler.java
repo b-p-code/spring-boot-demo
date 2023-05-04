@@ -1,3 +1,7 @@
+// CS5012 Final Project 3/29/2023 Bryce Paubel
+// The change handler for the sink input
+// Heavily based on class examples
+
 package paubel.cs5012.course;
 
 import org.springframework.cloud.stream.annotation.EnableBinding;
@@ -7,10 +11,11 @@ import org.springframework.cloud.stream.messaging.Sink;
 
 @EnableBinding(Sink.class)
 public class InstructorChangeHandler {
+    // Listen on the input channel
     @StreamListener(Sink.INPUT)
     public void sinkHandler(InstructorChangeMessage message) {
-
-        switch(message.getAction()){
+        // Display a message based on the action of the InstructorChangeMessage
+        switch (message.getAction()) {
             case "GET":
                 System.out.println("Received a GET event from the instructor service for instructor: " + message.getName());
                 break;
@@ -27,31 +32,5 @@ public class InstructorChangeHandler {
                 System.out.println("Received an UNKOWN event from the instructor service for instructor: " + message.getName());
                 break;
         }
-    }
-}
-
-class InstructorChangeMessage {
-    String action;
-    String name;
-
-    public String getAction() {
-        return action;
-    }
-
-    public void setAction(String action) {
-        this.action = action;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public InstructorChangeMessage(String action, String name) {
-        this.action = action;
-        this.name = name;
     }
 }

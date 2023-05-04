@@ -1,8 +1,9 @@
-# CS5012 hw5 Bryce Paubel 4/27/23
+# CS5012 Final Project Bryce Paubel 4/29/23
 # docker-compose based heavily on class examples
-# Spins up a database, config-service, discovery-service, course-service, student-service, and instructor-service
+# Spins up a database, config-service, discovery-service, gateway-service, course-service, student-service, and instructor-service
+# along with other items like Kafka and Zookeeper
 
-# NOTE - If source files have not changed between projects, they may still have hw3 as their header
+# NOTE - If source files have not changed between projects, they may still have hw3/hw4 as their header
 
 # NOTE - dockerfiles will build to paubel/DOCKER_IMAGE_NAME:SNAPSHOT-0.0.1
 # If you would like to use these dockerfile images, change the prefixes in this file to match
@@ -127,7 +128,7 @@ services:
     networks:
       - backend
 
-  # Zookeeper and Kafka
+  # Zookeeper and Kafka as shown in class material
   zookeeper:
     image: wurstmeister/zookeeper:latest
     ports:
